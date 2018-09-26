@@ -34,13 +34,13 @@ public class RedistributiveLoggingArray extends RedistributiveArray {
     }
 
     /***
-     * Ищет совпадение текущего массива с одним из его предыдущих состояний (самым недавним, если таким несколько)
+     * Ищет совпадение текущего массива с одним из его предыдущих состояний (самым недавним, если таких несколько)
      */
     private void checkCycle() {
         ArrayChangeLog.LogEntry lastEntry = changeLog.getLastEntry(); // запись о текущем состоянии
-        List<Integer> arrayHashCodeOccurrences = changeLog.getIterationsMatchingHashCode(this.hashCode());
-        for (int i = arrayHashCodeOccurrences.size() - 1; i >= 0; i--) { // ищем самое недавнее
-            int iterationNumber = arrayHashCodeOccurrences.get(i);
+        List<Integer> sameHashOccurrences = changeLog.getIterationsMatchingHashCode(this.hashCode());
+        for (int i = sameHashOccurrences.size() - 1; i >= 0; i--) { // ищем самое недавнее совпадение
+            int iterationNumber = sameHashOccurrences.get(i);
             ArrayChangeLog.LogEntry pastEntry = changeLog.getEntry(iterationNumber);
             if (pastEntry == lastEntry // одна и та же итерация
                     || !pastEntry.equals(lastEntry)) // не совпадают максимумы
