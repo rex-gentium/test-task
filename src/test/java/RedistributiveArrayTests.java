@@ -58,7 +58,7 @@ class RedistributiveArrayTests {
         RedistributiveArray array = new RedistributiveArray(arr);
         array.redistributeMaxValue();
         assertArrayEquals(expectedRedistribution, array.getData());
-        array.redistributeBack(7, 2);
+        array.rollback(7, 2);
         assertArrayEquals(arr, array.getData());
     }
 }

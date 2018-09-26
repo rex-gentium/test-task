@@ -9,8 +9,8 @@ import java.util.stream.IntStream;
  * Массив с функцией перераспределения максимума по остальным ячейкам
  */
 public class RedistributiveArray {
-    private int[] data;
-    private int maxValue, maxValueIndex;
+    protected int[] data;
+    protected int maxValue, maxValueIndex;
 
     /***
      * @param data null воспринимается как пустой массив
@@ -83,7 +83,7 @@ public class RedistributiveArray {
      * @param previousMaxValue предыдущий максимум
      * @param previousMaxIndex индекс предыдущего максимума
      */
-    public void redistributeBack(int previousMaxValue, int previousMaxIndex) {
+    public void rollback(int previousMaxValue, int previousMaxIndex) {
         if (data.length <= 1 || previousMaxValue == 0) return; // ничего не распределяли
         int distributionValue = previousMaxValue / data.length; // на сколько увеличили все ячейки в массиве
         int surplusCount = previousMaxValue % data.length; // сколько следующих от максимума ячеек увеличили ещё на 1

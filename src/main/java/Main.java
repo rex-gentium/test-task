@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         //int[] arr = {0, 5, 10, 0, 11, 14, 13, 4, 11, 8, 8, 7, 1, 4, 12, 11};
         //int[] arr = {0, 0, 0, 0, 10};
-        int[] arr = generateRandomArray(10, 1000);
+        int[] arr = generateRandomArray(30, 1000);
 
         Runtime runtime = Runtime.getRuntime();
         long memoryBefore = runtime.totalMemory() - runtime.freeMemory();

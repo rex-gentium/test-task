@@ -27,7 +27,7 @@ public abstract class DistributionCycles {
     private static boolean isAcceptableMemoryDemand(int[] arr) {
         // условие можно изменить на более приемлемое для данной машины,
         // напр. Runtime.getRuntime().freeMemory() > N;
-        return arr.length < 1000;
+        return arr == null || arr.length < 1000;
     }
 
     /***
@@ -41,7 +41,7 @@ public abstract class DistributionCycles {
             return new CycleSearchResult(0, 0);
         RedistributiveArray redistributiveArray = new RedistributiveArray(arr);
         int iterationCount = 0;
-        int cycleLength = 0;
+        int cyclePeriod = 0;
         // карта: массив -> номер итерации
         HashMap<RedistributiveArray, Integer> redistributionCash = new HashMap<>();
         redistributionCash.put(redistributiveArray, iterationCount);
@@ -50,11 +50,11 @@ public abstract class DistributionCycles {
             redistributiveArray.redistributeMaxValue();
             Integer previousEntry = redistributionCash.put(redistributiveArray, iterationCount);
             if (previousEntry != null) {
-                cycleLength = iterationCount - previousEntry;
+                cyclePeriod = iterationCount - previousEntry;
                 break;
             }
         }
-        return new CycleSearchResult(cycleLength, iterationCount);
+        return new CycleSearchResult(cyclePeriod, iterationCount);
     }
 
     /***
@@ -66,15 +66,13 @@ public abstract class DistributionCycles {
     private static CycleSearchResult evaluateRedistributionOfMaxValueCycleMemoryEfficient(int[] arr) {
         if (arr == null || arr.length == 0)
             return new CycleSearchResult(0, 0);
-        RedistributiveArray redistributiveArray = new RedistributiveArray(arr);
-        // карта: хеш массива -> максимальное значение, его индекс и номер итерации
-        RedistributionLog log = new RedistributionLog();
-        log.addEntry(redistributiveArray);
-        while (!log.isCycleFound()) {
+        RedistributiveLoggingArray redistributiveArray = new RedistributiveLoggingArray(arr);
+        int iterationCount = 0;
+        while (!redistributiveArray.isCycleFound()) {
+            ++iterationCount;
             redistributiveArray.redistributeMaxValue();
-            log.addEntry(redistributiveArray);
         }
-        return new CycleSearchResult(log.getCyclePeriod(), log.getIterationCount());
+        return new CycleSearchResult(redistributiveArray.getCyclePeriod(), iterationCount);
     }
 
 }
